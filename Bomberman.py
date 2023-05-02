@@ -17,35 +17,36 @@ for i in range(height):
         
 player = "@"
 playerCoords = [0][0]
-numBombs = 1        
+numBombs = 1
+bombRange = 1       
 bomb = "!"        
 
 def screen():
     print("")
     for o in range(len(map)):
-        print(map[o])
+        print(map[o],flush = True)
 
 map[x][y] = player
 screen()
 
 def movePlayer(map,player,direction):
     coords = []
-    g = j
-    h = k
     for j in range(len(map)):
-        for k in range(leng(map[j])):
+        for k in range(len(map[j])):
             if(map[j][k] == "@"):
-                x = j
-                y = k
-    if(direction == "right"): 
-        g+=1
-    elif(direction == "left"): 
-        g-=1
-    elif(direction == "up"): 
-        h-=1
-    elif(direction == "down"): 
+                y = j
+                x = k
+                g = y
+                h = x
+    if(direction == "right" and map[y][x+1] != "#"): 
         h+=1
-    map[x][y], map[g][h] = map[g][h], map[x][y]
+    elif(direction == "left" and map[y][x-1] != "#"): 
+        h-=1
+    elif(direction == "up" and map[y-1][x] != "#"): 
+        g-=1
+    elif(direction == "down" and map[y+1][x] != "#"):  
+        g+=1
+    map[y][x], map[g][h] = map[g][h], map[y][x]
     screen()
 
 def on_key_release(key):
