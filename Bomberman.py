@@ -29,7 +29,14 @@ def screen():
 map[x][y] = player
 screen()
 
-def movePlayer(map,player,direction):
+def findPlayer(map):
+    coords = []
+    for j in range(len(map)):
+        for k in range(len(map[j])):
+            if(map[j][k] == "@"):
+                return [j,k]
+
+def movePlayer(map,direction):
     coords = []
     for j in range(len(map)):
         for k in range(len(map[j])):
@@ -49,15 +56,23 @@ def movePlayer(map,player,direction):
     map[y][x], map[g][h] = map[g][h], map[y][x]
     screen()
 
+def placeBomb():
+    t = findPlayer(map)[0]
+    f = findPlayer(map)[1]
+    if(map[t,f] != 
+    map[t][f] = bomb
+
 def on_key_release(key):
     if key == Key.right: 
-        movePlayer(map,player,"right")
+        movePlayer(map,"right")
     elif key == Key.left:
-        movePlayer(map,player,"left")
+        movePlayer(map,"left")
     elif key == Key.up:
-        movePlayer(map,player,"up")
+        movePlayer(map,"up")
     elif key == Key.down:
-        movePlayer(map,player,"down")
+        movePlayer(map,"down")
+    elif key == Key.space:
+        placeBomb()
     elif key == Key.esc:
         exit()
 with keyboard.Listener(on_release=on_key_release) as listener:
