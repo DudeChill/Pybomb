@@ -6,6 +6,7 @@ height = 11
 map = []
 x = 0
 y = 0
+bmb = []
 
 for i in range(height):
     map.append([])
@@ -14,7 +15,7 @@ for i in range(height):
             map[i].append("#")
         else:
             map[i].append("_")
-        
+
 player = "@"
 playerCoords = [0][0]
 numBombs = 1
@@ -24,7 +25,9 @@ bomb = "!"
 def screen():
     print("")
     for o in range(len(map)):
-        print(map[o],flush = True)
+        for p in range(len(map[0])):
+            print(map[o][p],flush = True,end = ' ')
+        print(' ', end = '\n')
 
 map[x][y] = player
 screen()
@@ -45,22 +48,31 @@ def movePlayer(map,direction):
                 x = k
                 g = y
                 h = x
-    if(direction == "right" and map[y][x+1] != "#"): 
+    if(direction == "right" and map[y][x+1] != "#" and x+1 != width): 
         h+=1
-    elif(direction == "left" and map[y][x-1] != "#"): 
+        showBomb()
+    elif(direction == "left" and map[y][x-1] != "#" and not x-1 < 0): 
         h-=1
-    elif(direction == "up" and map[y-1][x] != "#"): 
+        showBomb()
+    elif(direction == "up" and map[y-1][x] != "#" and not y-1 < 0): 
         g-=1
-    elif(direction == "down" and map[y+1][x] != "#"):  
+        showBomb()
+    elif(direction == "down" and map[y+1][x] != "#" and y+1 != height):  
         g+=1
+        showBomb()
     map[y][x], map[g][h] = map[g][h], map[y][x]
     screen()
 
 def placeBomb():
     t = findPlayer(map)[0]
     f = findPlayer(map)[1]
-    if(map[t,f] != 
-    map[t][f] = bomb
+    if(len(bmb)!=numBombs):
+        bmb.append(f)
+        bmb.append(t) 
+        
+def showBomb():
+    map[bmb[0]][bmb[1]] = "!";
+    bmb.clear()
 
 def on_key_release(key):
     if key == Key.right: 
